@@ -1,0 +1,70 @@
+/* CONFIGURACIÓN GENERAL */
+
+/* Quitamos márgenes y padding que pone el navegador  por defecto y hacemos que el tamaño sea más fácil de controlar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Configuración general de la página */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #0b0b0f;
+    color: #ffffff;
+
+    /* Altura minima de toda la pantalla*/
+    min-height: 1.6;
+}
+
+/* CABECERA */
+header {
+    background-color: linear-gradient(135deg, #15151d, #25253023);
+    padding: 45px 20px;
+    text-align: center;
+    border-bottom: 2px solid #e50914;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Título principal */
+header h1 {
+    font-size: 45px;
+    margin-bottom: 10px;
+    color: #e50914;
+    letter-spacing: 1px;
+}
+
+/* Subtítulo */
+header p {
+    color: #b8b8c2;
+    font-size: 18px;
+}
+
+/* CONTENIDO PRINCIPAL */
+
+main {
+    width: 90%;
+    max-width: 1100px;
+    margin: 4px auto;
+}
+
+/* SECCIONES */
+
+section {
+    margin-bottom: 30px;
+    background: #17171f;
+    padding: 30px;
+    border: 1px solid #292934;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+section h2 {
+    font-size: 25px;
+    margin-bottom: 25px;
+    color: #ffffff;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e50914;
+}
+
+
