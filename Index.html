@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CineVerse - Reserva de Entradas</title>
+
+    <link rel="stylesheet" href="style.css"> 
+
+    <!--
+        defer:
+        Hace que el navegador descargue el JavaScript
+        mientras continúa cargando la página.
+
+        Así no bloqueamos el HTML y esperamos a que
+        el DOM esté disponible antes de ejecutar el código.
+    -->
+    <script src="script.js" defer></script>
+</head>
+ 
+<body>
+
+    <header>
+        <h1> CineVerse</h1>
+        <p>Portal de reserva de entradas</p>
+    </header>
+
+
+    <!-- =========================
+         INFORMACIÓN DEL SOCIO
+         ========================= -->
+
+    <main>
+
+        <section id="perfil">
+
+            <h2>Perfil del espectador</h2>
+
+            <p>
+                <strong>Usuario:</strong>
+                <span id="usuario">-</span>
+            </p>
+
+            <p>
+                <strong>Rol:</strong>
+                <span id="rol">-</span>
+            </p>
+
+            <p>
+                <strong>Socio:</strong>
+                <span id="codigoSocio">-</span>
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                <span id="email">-</span>
+            </p>
+
+            <p>
+                <strong>Nombre de usuario del email:</strong>
+                <span id="emailUsuario">-</span>
+            </p>
+
+            <p>
+                <strong>Dominio:</strong>
+                <span id="emailDominio">-</span>
+            </p>
+
+            <p>
+                <strong>Suscripción:</strong>
+                <span id="suscripcion">-</span>
+            </p>
+
+            <p>
+                <strong>Entradas de regalo:</strong>
+                <span id="entradasRegalo">-</span>
+            </p>
+
+        </section>
+
+
+        <!-- =========================
+             DIAGNÓSTICO DEL NAVEGADOR
+             ========================= -->
+
+        <section id="entorno">
+
+            <h2>Información del entorno</h2>
+
+            <p>
+                <strong>Idioma:</strong>
+                <span id="idioma">-</span>
+            </p>
+
+            <p>
+                <strong>Conexión:</strong>
+                <span id="conexion">-</span>
+            </p>
+
+            <p>
+                <strong>ID de sesión:</strong>
+                <span id="idSesion">-</span>
+            </p>
+
+            <p>
+                <strong>Fecha:</strong>
+                <span id="fecha">-</span>
+            </p>
+
+        </section>
+
+
+        <!-- =========================
+             TAQUILLA
+             ========================= -->
+
+        <section id="taquilla">
+
+            <h2> Taquilla</h2>
+
+            <div class="tarjetas">
+
+                <article class="tarjeta">
+
+                    <h3>Entrada General</h3>
+
+                    <p>8.50 €</p>
+
+                </article>
+
+
+                <article class="tarjeta">
+
+                    <h3>Combo Pareja</h3>
+
+                    <p>12.00 €</p>
+
+                </article>
+
+            </div>
+
+
+            <p>
+                <strong>Código promocional:</strong>
+                3 €
+            </p>
+
+            <button id="calcular">
+                Calcular reserva
+            </button>
+
+
+            <div id="factura">
+
+                <h3>Resumen de compra</h3>
+
+                <p>
+                    Subtotal:
+                    <span id="subtotal">-</span>
+                </p>
+
+                <p>
+                    Descuento:
+                    <span id="descuento">-</span>
+                </p>
+
+                <p>
+                    IVA:
+                    <span id="iva">-</span>
+                </p>
+
+                <p>
+                    <strong>Total a pagar:</strong>
+                    <span id="total">-</span>
+                </p>
+
+                <p>
+                    Número de reserva:
+                    <span id="numeroReserva">-</span>
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             DESCUENTO FLASH
+             ========================= -->
+
+        <section id="promocion">
+
+            <h2> Venta Anticipada</h2>
+
+            <p>
+                Descuento Flash disponible durante:
+            </p>
+
+            <p id="contador">
+                20 segundos
+            </p>
+
+            <button id="activarFlash">
+                Activar Descuento Flash
+            </button>
+
+        </section>
+
+
+        <!-- =========================
+             RESEÑAS
+             ========================= -->
+
+        <section id="resenas">
+
+            <h2> Reseñas de películas</h2>
+
+            <textarea
+                id="opinion"
+                rows="5"
+                cols="50"
+                placeholder="Escribe tu opinión sobre una película..."
+            ></textarea>
+
+            <br><br>
+
+            <button id="enviarResena">
+                Publicar reseña
+            </button>
+
+            <div id="listaResenas"></div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            CineVerse | 2026
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
