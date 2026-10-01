@@ -1,70 +1,155 @@
-/* CONFIGURACIÓN GENERAL */
-
-/* Quitamos márgenes y padding que pone el navegador  por defecto y hacemos que el tamaño sea más fácil de controlar */
+/* Configuración general */
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-/* Configuración general de la página */
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #0b0b0f;
-    color: #ffffff;
-
-    /* Altura minima de toda la pantalla*/
-    min-height: 1.6;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: white;
 }
 
-/* CABECERA */
+
+/* Cabecera */
 header {
-    background-color: linear-gradient(135deg, #15151d, #25253023);
-    padding: 45px 20px;
     text-align: center;
-    border-bottom: 2px solid #e50914;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    background: #222;
+    border-bottom: 3px solid #e50914;
 }
 
-/* Título principal */
 header h1 {
-    font-size: 45px;
-    margin-bottom: 10px;
     color: #e50914;
-    letter-spacing: 1px;
+    margin-bottom: 10px;
 }
 
-/* Subtítulo */
-header p {
-    color: #b8b8c2;
-    font-size: 18px;
-}
 
-/* CONTENIDO PRINCIPAL */
-
+/* Contenido */
 main {
     width: 90%;
-    max-width: 1100px;
-    margin: 4px auto;
+    max-width: 1000px;
+    margin: 30px auto;
 }
 
-/* SECCIONES */
 
+/* Secciones */
 section {
-    margin-bottom: 30px;
-    background: #17171f;
-    padding: 30px;
-    border: 1px solid #292934;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+    background: #222;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 10px;
 }
 
 section h2 {
-    font-size: 25px;
-    margin-bottom: 25px;
-    color: #ffffff;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #e50914;
+    margin-bottom: 20px;
+    color: #e50914;
 }
 
+
+/* Información */
+#perfil p,
+#entorno p {
+    padding: 8px;
+    border-bottom: 1px solid #444;
+}
+
+
+/* Tarjetas de precios */
+.tarjetas {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.tarjeta {
+    background: #333;
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1;
+    text-align: center;
+}
+
+.tarjeta p {
+    color: #e50914;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+
+/* Botones */
+button {
+    background: #e50914;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #b20710;
+}
+
+
+/* Factura */
+#factura {
+    background: #333;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+#total {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+
+/* Contador */
+#contador {
+    text-align: center;
+    font-size: 35px;
+    font-weight: bold;
+    color: #e50914;
+    margin: 20px;
+}
+
+
+/* Reseñas */
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.resena {
+    background: #333;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 8px;
+}
+
+
+/* Pie de página */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #222;
+    color: #aaa;
+}
+
+
+/* Adaptación para móvil */
+@media (max-width: 600px) {
+    .tarjetas {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+}
 
