@@ -1,516 +1,246 @@
 'use strict';
 
-
-/* =====================================================
-   BLOQUE 1
-   ACCESO, ENTORNO Y PERFIL
-   ===================================================== */
-
-
 /* =========================
-   LEER PARÁMETROS DE LA URL
+   USUARIO
    ========================= */
 
-// Obtenemos los parámetros que aparecen después del ?
-//
-// Ejemplo:
-//
-// index.html?usuario=Diego&rol=VIP
+// Cogemos los datos de la URL
+let datos = new URLSearchParams(window.location.search);
 
-const parametros = new URLSearchParams(window.location.search);
+let usuario = datos.get('usuario') || 'Invitado';
+let rol = datos.get('rol') || 'Socio';
 
+// Mostramos los datos
+document.getElementById('usuario').textContent = usuario;
+document.getElementById('rol').textContent = rol;
 
-// Si existe usuario lo usamos.
-// Si no existe, utilizamos "Invitado".
-
-const usuario = parametros.get('usuario') || 'Invitado';
-
-
-// Si existe rol lo usamos.
-// Si no existe, utilizamos "Socio".
-
-const rol = parametros.get('rol') || 'Socio';
+console.log('===== USUARIO =====');
+console.log('Usuario:', usuario);
+console.log('Rol:', rol);
 
 
 /* =========================
    INFORMACIÓN DEL NAVEGADOR
    ========================= */
 
-// Idioma configurado en el navegador
+// Idioma
+document.getElementById('idioma').textContent = navigator.language;
 
-const idioma = navigator.language;
+// Conexión
+document.getElementById('conexion').textContent =
+    navigator.onLine ? 'Conectado' : 'Sin conexión';
 
-
-// Comprobamos si tenemos conexión a Internet
-
-const conectado = navigator.onLine;
-
-
-/* =========================
-   ID SEGURO DE SESIÓN
-   ========================= */
-
+// ID de sesión
 let idSesion;
 
-
-// Comprobamos si el navegador permite
-// generar un UUID criptográficamente seguro.
-
 if (crypto.randomUUID) {
-
     idSesion = crypto.randomUUID();
-
 } else {
-
-    // Alternativa sencilla si no existe randomUUID
-
-    idSesion = Date.now() + '-' + Math.random();
-
+    idSesion = Math.random().toString(36).substring(2);
 }
 
+document.getElementById('idSesion').textContent = idSesion;
 
-/* =========================
-   FECHA ACTUAL
-   ========================= */
-
-const fechaActual = new Date();
-
-
-const fechaFormateada = fechaActual.toLocaleDateString(
-    'es-ES',
-    {
+// Fecha
+document.getElementById('fecha').textContent =
+    new Date().toLocaleDateString('es-ES', {
         dateStyle: 'full'
-    }
-);
+    });
+
+console.log('===== INFORMACIÓN DEL NAVEGADOR =====');
+console.log('Idioma:', navigator.language);
+console.log('Conexión:', navigator.onLine ? 'Conectado' : 'Sin conexión');
+console.log('ID de sesión:', idSesion);
+console.log('Fecha:', new Date().toLocaleDateString('es-ES', {
+    dateStyle: 'full'
+}));
 
 
 /* =========================
    DATOS DEL SOCIO
    ========================= */
 
-// Email de ejemplo
+// Email
+let email = 'DIEGO@CINEVERSE.COM';
 
-let emailSocio = '  DIEGO@CINEVERSE.COM  ';
+email = email.trim().toLowerCase();
 
+let partes = email.split('@');
 
-// Limpiamos espacios de los extremos
-// y pasamos todo a minúsculas.
+document.getElementById('email').textContent = email;
+document.getElementById('emailUsuario').textContent = partes[0];
+document.getElementById('emailDominio').textContent = partes[1];
 
-emailSocio = emailSocio.trim().toLowerCase();
+// Código del socio
+document.getElementById('codigoSocio').textContent =
+    String(25).padStart(6, '0');
 
+// Suscripción
+let suscripcion = null;
 
-/* =========================
-   SEPARAR EMAIL
-   ========================= */
+document.getElementById('suscripcion').textContent =
+    suscripcion ?? 'Básica';
 
-// Dividimos el email utilizando @
-//
-// resultado:
-//
-// ["diego", "cineverse.com"]
+// Entradas de regalo
+let entradas;
 
-const partesEmail = emailSocio.split('@');
+document.getElementById('entradasRegalo').textContent =
+    entradas ?? 2;
 
-
-const nombreEmail = partesEmail[0];
-
-const dominioEmail = partesEmail[1];
-
-
-/* =========================
-   CÓDIGO DE SOCIO
-   ========================= */
-
-const codigoOriginal = 25;
-
-
-// Convertimos el número a texto
-// y añadimos ceros hasta tener 6 posiciones.
-
-const codigoSocio = String(codigoOriginal).padStart(6, '0');
+console.log('===== DATOS DEL SOCIO =====');
+console.log('Email:', email);
+console.log('Usuario del email:', partes[0]);
+console.log('Dominio:', partes[1]);
+console.log('Código de socio:', String(25).padStart(6, '0'));
+console.log('Suscripción:', suscripcion ?? 'Básica');
+console.log('Entradas de regalo:', entradas ?? 2);
 
 
 /* =========================
-   PREFERENCIAS
+   TAQUILLA
    ========================= */
 
-// Apodo vacío
+document.getElementById('calcular').onclick = function () {
 
-let apodo = '';
+    // Precios
+    let entrada = 8.50;
+    let combo = 12.00;
+    let descuento = 3;
 
+    // Calculamos el subtotal
+    let subtotal = entrada + combo;
 
-// Si el apodo está vacío,
-// utilizamos "Espectador VIP".
+    // Aplicamos el descuento
+    let precio = subtotal - descuento;
 
-const nombreMostrado = apodo || 'Espectador VIP';
+    // Calculamos el IVA
+    let iva = precio * 0.21;
 
+    // Calculamos el total
+    let total = precio + iva;
 
-// Tipo de suscripción
-
-let tipoSuscripcion = null;
-
-
-// Si es null o undefined,
-// utilizamos "Básica".
-
-const suscripcion = tipoSuscripcion ?? 'Básica';
-
-
-// Saldo original
-
-let saldoEntradas;
-
-
-// Si el saldo NO está definido,
-// damos 2 entradas.
-
-// Es importante utilizar ?? para respetar
-// un valor 0.
-
-const entradasRegalo = saldoEntradas ?? 2;
-
-
-/* =========================
-   MOSTRAR DATOS
-   ========================= */
-
-document.getElementById('usuario').textContent = usuario;
-
-document.getElementById('rol').textContent = rol;
-
-document.getElementById('codigoSocio').textContent = codigoSocio;
-
-document.getElementById('email').textContent = emailSocio;
-
-document.getElementById('emailUsuario').textContent = nombreEmail;
-
-document.getElementById('emailDominio').textContent = dominioEmail;
-
-document.getElementById('suscripcion').textContent = suscripcion;
-
-document.getElementById('entradasRegalo').textContent = entradasRegalo;
-
-document.getElementById('idioma').textContent = idioma;
-
-document.getElementById('conexion').textContent =
-    conectado ? 'Conectado' : 'Sin conexión';
-
-document.getElementById('idSesion').textContent = idSesion;
-
-document.getElementById('fecha').textContent = fechaFormateada;
-
-
-/* =====================================================
-   BLOQUE 2
-   TAQUILLA, TARIFAS Y FACTURACIÓN
-   ===================================================== */
-
-
-/* =========================
-   PRECIOS
-   ========================= */
-
-// Los precios llegan como texto,
-// tal como indica la práctica.
-
-const precioEntradaTexto = '8.50';
-
-const precioComboTexto = '12.00';
-
-
-// Convertimos los textos a números.
-
-const precioEntrada = Number(precioEntradaTexto);
-
-const precioCombo = Number(precioComboTexto);
-
-
-/* =========================
-   CALCULAR SUBTOTAL
-   ========================= */
-
-const subtotal = precioEntrada + precioCombo;
-
-
-/* =========================
-   COMPROBAR SI ES VÁLIDO
-   ========================= */
-
-// Comprobamos que el resultado sea un número.
-
-if (Number.isNaN(subtotal)) {
-
-    console.error('El subtotal no es válido.');
-
-}
-
-
-/* =========================
-   DESCUENTO
-   ========================= */
-
-// El descuento llega como texto.
-
-const descuentoTexto = '3';
-
-
-// Lo convertimos a número.
-
-const descuento = Number(descuentoTexto);
-
-
-// Restamos el descuento.
-
-const importeConDescuento = subtotal - descuento;
-
-
-/* =========================
-   IVA
-   ========================= */
-
-// IVA del 21 %
-
-const iva = importeConDescuento * 0.21;
-
-
-// Calculamos el total.
-
-const total = importeConDescuento + iva;
-
-
-/* =========================
-   FORMATO DE MONEDA
-   ========================= */
-
-// Creamos un formateador de moneda española.
-
-const formatoEuro = new Intl.NumberFormat(
-    'es-ES',
-    {
+    // Formato de euros
+    let euros = new Intl.NumberFormat('es-ES', {
         style: 'currency',
         currency: 'EUR'
-    }
-);
+    });
 
+    // Mostramos los resultados
+    document.getElementById('subtotal').textContent =
+        euros.format(subtotal);
 
-/* =========================
-   MOSTRAR FACTURA
-   ========================= */
+    document.getElementById('descuento').textContent =
+        euros.format(descuento);
 
-document.getElementById('subtotal').textContent =
-    formatoEuro.format(subtotal);
+    document.getElementById('iva').textContent =
+        euros.format(iva);
 
+    document.getElementById('total').textContent =
+        euros.format(total);
 
-document.getElementById('descuento').textContent =
-    formatoEuro.format(descuento);
+    // Número de reserva
+    let numero = 1000;
+    numero++;
 
+    document.getElementById('numeroReserva').textContent = numero;
+};
 
-document.getElementById('iva').textContent =
-    formatoEuro.format(iva);
-
-
-document.getElementById('total').textContent =
-    formatoEuro.format(total);
+console.log('===== TAQUILLA =====');
+console.log('Entrada:', entrada, '€');
+console.log('Combo:', combo, '€');
+console.log('Subtotal:', subtotal, '€');
+console.log('Descuento:', descuento, '€');
+console.log('IVA:', iva, '€');
+console.log('Total:', total, '€');
+console.log('Número de reserva:', numero);
 
 
 /* =========================
    NÚMERO DE RESERVA
    ========================= */
 
-let numeroTicket = 1000;
+let numero = 1000;
 
+numero++;
 
-// Pre-incremento.
-//
-// Primero aumenta el valor
-// y después lo utiliza.
-
-const numeroReserva = ++numeroTicket;
-
-
-document.getElementById('numeroReserva').textContent =
-    numeroReserva;
-
-
-/* =====================================================
-   BLOQUE 3
-   PROMOCIÓN "VENTA ANTICIPADA"
-   ===================================================== */
+document.getElementById('numeroReserva').textContent = numero;
 
 
 /* =========================
-   VARIABLES DEL TEMPORIZADOR
+   DESCUENTO FLASH
    ========================= */
 
-let tiempoRestante = 20;
+let tiempo = 20;
+let contador = null;
 
-let temporizador = null;
+document.getElementById('activarFlash').onclick = function () {
 
-
-/* =========================
-   ELEMENTOS HTML
-   ========================= */
-
-const botonFlash =
-    document.getElementById('activarFlash');
-
-
-const contador =
-    document.getElementById('contador');
-
-
-/* =========================
-   FUNCIÓN DEL DESCUENTO FLASH
-   ========================= */
-
-function activarDescuentoFlash() {
-
-    /*
-        Si ya existe un temporizador,
-        no hacemos nada.
-
-        Esto evita que el usuario pueda
-        crear varios setInterval.
-    */
-
-    if (temporizador !== null) {
-
+    // Evitamos iniciar varios contadores
+    if (contador !== null) {
         return;
-
     }
 
+    tiempo = 20;
 
-    // Comenzamos desde 20 segundos.
+    document.getElementById('contador').textContent =
+        tiempo + ' segundos';
 
-    tiempoRestante = 20;
+    contador = setInterval(function () {
 
-    contador.textContent =
-        tiempoRestante + ' segundos';
+        tiempo--;
 
+        document.getElementById('contador').textContent =
+            tiempo + ' segundos';
 
-    /*
-        setInterval ejecuta el código
-        una vez cada 1000 milisegundos.
-    */
+        if (tiempo === 0) {
 
-    temporizador = setInterval(function () {
+            clearInterval(contador);
 
-        tiempoRestante--;
-
-
-        contador.textContent =
-            tiempoRestante + ' segundos';
-
-
-        /*
-            Cuando llega a 0,
-            paramos el temporizador.
-        */
-
-        if (tiempoRestante <= 0) {
-
-            clearInterval(temporizador);
-
-
-            // Limpiamos la variable de control.
-
-            temporizador = null;
-
-
-            // Avisamos al usuario.
+            contador = null;
 
             alert('La promoción ha caducado.');
-
         }
 
     }, 1000);
+};
 
+document.getElementById('activarFlash').onclick = function () {
+
+    console.log('===== DESCUENTO FLASH =====');
+    console.log('Descuento Flash activado');
+};
+
+if (tiempo === 0) {
+
+    console.log('Descuento Flash caducado');
+
+    clearInterval(contador);
+    contador = null;
+
+    alert('La promoción ha caducado.');
 }
 
 
 /* =========================
-   EVENTO DEL BOTÓN
-   ========================= */
-
-botonFlash.addEventListener(
-    'click',
-    activarDescuentoFlash
-);
-
-
-/* =====================================================
-   BLOQUE 4
-   RESEÑAS Y PERSISTENCIA
-   ===================================================== */
-
-
-/* =========================
-   ARRAY DE RESEÑAS
+   RESEÑAS
    ========================= */
 
 let resenas = [];
 
-
-/* =========================
-   RECUPERAR RESEÑAS
-   ========================= */
-
+// Recuperamos las reseñas guardadas
 try {
 
-    /*
-        Intentamos recuperar
-        las reseñas guardadas.
+    let guardadas = localStorage.getItem('resenas');
 
-        localStorage devuelve texto,
-        por eso utilizamos JSON.parse().
-    */
-
-    const datosGuardados =
-        localStorage.getItem('resenasCineVerse');
-
-
-    // Si existen datos guardados,
-    // los convertimos de JSON a array.
-
-    if (datosGuardados) {
-
-        resenas = JSON.parse(datosGuardados);
-
+    if (guardadas) {
+        resenas = JSON.parse(guardadas);
     }
 
 } catch (error) {
 
-    /*
-        Si existe algún problema al recuperar
-        los datos, mostramos el error
-        y utilizamos un array vacío.
-    */
-
-    console.error(
-        'Error al recuperar las reseñas:',
-        error
-    );
-
-    resenas = [];
+    console.log('No se pudieron cargar las reseñas');
 
 }
-
-
-/* =========================
-   ELEMENTOS HTML
-   ========================= */
-
-const opinion =
-    document.getElementById('opinion');
-
-
-const botonResena =
-    document.getElementById('enviarResena');
-
-
-const listaResenas =
-    document.getElementById('listaResenas');
-
 
 /* =========================
    MOSTRAR RESEÑAS
@@ -518,216 +248,88 @@ const listaResenas =
 
 function mostrarResenas() {
 
-    /*
-        Primero limpiamos el contenido
-        anterior.
-    */
+    let lista = document.getElementById('listaResenas');
 
-    listaResenas.replaceChildren();
+    lista.innerHTML = '';
 
+    for (let resena of resenas) {
 
-    /*
-        Recorremos todas las reseñas.
-    */
+        let div = document.createElement('div');
 
-    resenas.forEach(function (resena) {
+        div.className = 'resena';
 
-        // Creamos un artículo.
-
-        const articulo =
-            document.createElement('article');
-
-
-        articulo.classList.add('resena');
-
-
-        // Creamos el título.
-
-        const titulo =
-            document.createElement('h3');
-
+        let titulo = document.createElement('h3');
 
         titulo.textContent =
             'Reseña de ' + resena.usuario;
 
+        let texto = document.createElement('p');
 
-        // Creamos el texto de la opinión.
+        texto.textContent = resena.opinion;
 
-        const texto =
-            document.createElement('p');
+        let fecha = document.createElement('p');
 
+        fecha.textContent = resena.fecha;
 
-        /*
-            IMPORTANTE:
+        div.appendChild(titulo);
+        div.appendChild(texto);
+        div.appendChild(fecha);
 
-            Utilizamos textContent y NO innerHTML.
-
-            Así, si alguien escribe:
-
-            <script>alert('Hack')</script>
-
-            se mostrará como texto
-            y no se ejecutará.
-        */
-
-        texto.textContent =
-            resena.opinion;
-
-
-        // Creamos información de fecha.
-
-        const fecha =
-            document.createElement('p');
-
-
-        fecha.textContent =
-            'Creada: ' + resena.fecha;
-
-
-        // Creamos la hora local.
-
-        const hora =
-            document.createElement('p');
-
-
-        hora.textContent =
-            'Hora de envío: ' + resena.hora;
-
-
-        // Añadimos todos los elementos
-        // al artículo.
-
-        articulo.appendChild(titulo);
-
-        articulo.appendChild(texto);
-
-        articulo.appendChild(fecha);
-
-        articulo.appendChild(hora);
-
-
-        // Añadimos el artículo a la página.
-
-        listaResenas.appendChild(articulo);
-
-    });
-
+        lista.appendChild(div);
+    }
 }
 
 
 /* =========================
-   PUBLICAR RESEÑA
+   CREAR RESEÑA
    ========================= */
 
-function publicarResena() {
+document.getElementById('enviarResena').onclick = function () {
 
-    /*
-        trim() elimina espacios
-        al principio y al final.
-    */
+    let opinion =
+        document.getElementById('opinion').value.trim();
 
-    const textoOpinion =
-        opinion.value.trim();
+    if (opinion === '') {
 
-
-    // Comprobamos que no esté vacío.
-
-    if (textoOpinion === '') {
-
-        alert('Escribe una opinión antes de publicar.');
+        alert('Escribe una opinión.');
 
         return;
-
     }
 
-
-    /* =========================
-       FECHA Y HORA
-       ========================= */
-
-    const ahora = new Date();
-
-
-    const fecha =
-        ahora.toLocaleDateString('es-ES');
-
-
-    const hora =
-        ahora.toLocaleTimeString('es-ES');
-
-
-    /* =========================
-       CREAR OBJETO RESEÑA
-       ========================= */
-
-    const nuevaResena = {
-
-        fecha: ahora.toISOString(),
+    // Creamos la reseña
+    let resena = {
 
         usuario: usuario,
 
-        hora: hora,
+        opinion: opinion,
 
-        opinion: textoOpinion
-
+        fecha: new Date().toLocaleString('es-ES')
     };
 
+    // Guardamos la reseña
+    resenas.push(resena);
 
-    /*
-        Añadimos la nueva reseña
-        al array.
-    */
+    localStorage.setItem(
+        'resenas',
+        JSON.stringify(resenas)
+    );
 
-    resenas.push(nuevaResena);
-
-
-    /* =========================
-       GUARDAR EN LOCALSTORAGE
-       ========================= */
-
-    try {
-
-        localStorage.setItem(
-            'resenasCineVerse',
-            JSON.stringify(resenas)
-        );
-
-    } catch (error) {
-
-        console.error(
-            'No se pudo guardar la reseña:',
-            error
-        );
-
-    }
-
-
-    /* =========================
-       ACTUALIZAR PÁGINA
-       ========================= */
-
+    // La mostramos
     mostrarResenas();
 
-
-    // Limpiamos el textarea.
-
-    opinion.value = '';
-
-}
+    // Limpiamos el cuadro
+    document.getElementById('opinion').value = '';
+};
 
 
 /* =========================
-   EVENTO DEL BOTÓN
-   ========================= */
-
-botonResena.addEventListener(
-    'click',
-    publicarResena
-);
-
-
-/* =========================
-   MOSTRAR RESEÑAS AL CARGAR
+   CARGAR RESEÑAS
    ========================= */
 
 mostrarResenas();
+
+console.log('===== RESEÑA =====');
+console.log('Usuario:', usuario);
+console.log('Opinión:', opinion);
+console.log('Fecha:', resena.fecha);
+
